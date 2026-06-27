@@ -1,0 +1,19 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Add title manually",
+      "method": "POST",
+      "path": "/",
+      "body": {"mode": "manual", "type": "movie", "title": "Тестовый фильм", "year": 2024, "description": "Описание тестового фильма"},
+      "expectedStatus": 200,
+      "expectedBody": {"title": "Тестовый фильм"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

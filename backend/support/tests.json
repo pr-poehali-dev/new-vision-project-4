@@ -1,0 +1,24 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Submit support ticket",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "name": "Иван",
+        "email": "ivan@test.ru",
+        "subject": "Не работает поиск",
+        "message": "При поиске фильма ничего не находится"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {"message": "Обращение принято, ответим в течение 24 часов"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

@@ -6,12 +6,15 @@ import { ServicesSection } from "@/components/sections/services-section"
 import { AboutSection } from "@/components/sections/about-section"
 import { ContactSection } from "@/components/sections/contact-section"
 import { MagneticButton } from "@/components/magnetic-button"
+import { SearchModal } from "@/components/search-modal"
+import Icon from "@/components/ui/icon"
 import { useRef, useEffect, useState } from "react"
 
 export default function Index() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [currentSection, setCurrentSection] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const touchStartY = useRef(0)
   const touchStartX = useRef(0)
   const shaderContainerRef = useRef<HTMLDivElement>(null)
@@ -244,10 +247,21 @@ export default function Index() {
           ))}
         </div>
 
-        <MagneticButton variant="secondary" onClick={() => scrollToSection(4)}>
-          Войти
-        </MagneticButton>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground/20 bg-foreground/10 backdrop-blur-md transition-all hover:bg-foreground/20"
+            aria-label="Поиск"
+          >
+            <Icon name="Search" size={16} className="text-foreground" />
+          </button>
+          <MagneticButton variant="secondary" onClick={() => scrollToSection(4)}>
+            Войти
+          </MagneticButton>
+        </div>
       </nav>
+
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
       <div
         ref={scrollContainerRef}

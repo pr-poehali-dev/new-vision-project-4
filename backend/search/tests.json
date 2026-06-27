@@ -1,0 +1,18 @@
+{
+  "tests": [
+    {
+      "name": "Search without query",
+      "method": "GET",
+      "path": "/?q=",
+      "expectedStatus": 400
+    },
+    {
+      "name": "Search Dune",
+      "method": "GET",
+      "path": "/?q=Dune",
+      "expectedStatus": 200,
+      "expectedBody": {"local": [], "tmdb": []},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
