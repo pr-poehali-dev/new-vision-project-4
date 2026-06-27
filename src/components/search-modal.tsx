@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef } from "react"
+import { useNavigate } from "react-router-dom"
 import Icon from "@/components/ui/icon"
 import { AddTitleModal } from "@/components/add-title-modal"
 
@@ -24,6 +25,7 @@ interface SearchModalProps {
 }
 
 export function SearchModal({ isOpen, onClose }: SearchModalProps) {
+  const navigate = useNavigate()
   const [query, setQuery] = useState("")
   const [localResults, setLocalResults] = useState<SearchResult[]>([])
   const [tmdbResults, setTmdbResults] = useState<SearchResult[]>([])
@@ -125,7 +127,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             <div className="mb-2">
               <p className="px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-white/30">В базе</p>
               {localResults.map((r, i) => (
-                <ResultRow key={i} result={r} inBase />
+                <ResultRow key={i} result={r} inBase onOpen={() => { onClose(); navigate(`/title/${r.id}`) }} />
               ))}
             </div>
           )}
@@ -156,9 +158,12 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   )
 }
 
-function ResultRow({ result, inBase, onAdd }: { result: SearchResult; inBase?: boolean; onAdd?: () => void }) {
+function ResultRow({ result, inBase, onAdd, onOpen }: { result: SearchResult; inBase?: boolean; onAdd?: () => void; onOpen?: () => void }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-white/5">
+    <div
+      className="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-white/5"
+      onClick={inBase ? onOpen : undefined}
+    >
       <div className="h-12 w-9 shrink-0 overflow-hidden rounded-md bg-white/10">
         {result.poster_url ? (
           <img src={result.poster_url} alt={result.title} className="h-full w-full object-cover" />
@@ -179,12 +184,13 @@ function ResultRow({ result, inBase, onAdd }: { result: SearchResult; inBase?: b
       </div>
 
       {inBase ? (
-        <span className="shrink-0 rounded-full bg-green-500/20 px-2.5 py-0.5 font-mono text-[10px] text-green-400">
-          В базе
-        </span>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <span className="rounded-full bg-green-500/20 px-2.5 py-0.5 font-mono text-[10px] text-green-400">В базе</span>
+          <Icon name="ChevronRight" size={14} className="text-white/30" />
+        </div>
       ) : (
         <button
-          onClick={onAdd}
+          onClick={(e) => { e.stopPropagation(); onAdd?.() }}
           className="shrink-0 rounded-full border border-white/20 bg-white/5 px-3 py-1 font-mono text-[10px] text-white/70 transition-all hover:bg-white/15 hover:text-white"
         >
           + Добавить

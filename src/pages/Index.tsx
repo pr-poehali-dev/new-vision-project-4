@@ -9,8 +9,10 @@ import { MagneticButton } from "@/components/magnetic-button"
 import { SearchModal } from "@/components/search-modal"
 import Icon from "@/components/ui/icon"
 import { useRef, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function Index() {
+  const navigate = useNavigate()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [currentSection, setCurrentSection] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
@@ -247,13 +249,21 @@ export default function Index() {
           ))}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setSearchOpen(true)}
             className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground/20 bg-foreground/10 backdrop-blur-md transition-all hover:bg-foreground/20"
             aria-label="Поиск"
           >
             <Icon name="Search" size={16} className="text-foreground" />
+          </button>
+          <button
+            onClick={() => navigate("/favorites")}
+            className="flex h-9 items-center gap-1.5 rounded-full border border-foreground/20 bg-foreground/10 px-3 backdrop-blur-md transition-all hover:bg-foreground/20"
+            aria-label="Мой список"
+          >
+            <Icon name="Star" size={14} className="text-foreground" />
+            <span className="hidden font-sans text-xs text-foreground md:inline">Мой список</span>
           </button>
           <MagneticButton variant="secondary" onClick={() => scrollToSection(4)}>
             Войти
